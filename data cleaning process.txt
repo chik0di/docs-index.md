@@ -1,0 +1,77 @@
+Froze the headers for a start from the View pane
+
+Trimmed columns with the TRIM function 
+
+Wrote a formula to return time of the day from the time of 
+incident
+
+Removed duplicate rows and rows with abysmally incosistent detailing
+
+Wrote another formula to return the centuries from which these
+attacks occured. i did this with the IF Statement 
+>> 
+=IF(AND(C:C>1900, C:C<=2000), "20th Century", IF(AND(C:C>2000, C:C<=3000), "21st Century", IF(AND(C:C>1800, C:C<=1900), "19th Century", IF(AND(C:C>1700, C:C<=1800), "18th Century", IF(AND(C:C>1600, C:C<=1700), "17th Century", IF(AND(C:C>1500, C:C<=1600), "16th Century", "Unknown")))))) 
+<<
+
+Imported table to MySQL for further cleaning where i checked for misspelt values 
+
+I also made a comprehensive grouping of shark species with SQL using Wildcards, the CASE statement and Subqueries
+>>
+SELECT shark_specie, SUM(sharkfam) sharkgroup
+FROM 
+	(SELECT 
+		CASE
+			WHEN species LIKE '%white%' THEN 'White Shark'
+			WHEN species LIKE '%Tiger%' THEN 'Tiger Shark'
+			WHEN species LIKE '%Bull%' THEN 'Bull Shark'
+			WHEN species LIKE '%Bronze%' THEN 'Bronze Shark'
+			WHEN species LIKE '%Sand%' THEN 'Sand Shark'
+			WHEN species LIKE '%zambesi%' THEN 'Zambesi Shark'
+			WHEN species LIKE '%wobbegong%' THEN 'Wobbegong Shark'
+			WHEN species LIKE '%silk%' THEN 'Silky Shark'
+			WHEN species LIKE '%shovel%' THEN 'Shovel_nosed Shark'
+			WHEN species LIKE '%nurse%' THEN 'Nurse Shark'
+			WHEN species LIKE '%mako%' THEN 'Mako Shark'
+			WHEN species LIKE '%leop%' THEN 'Leopard Shark'
+			WHEN species LIKE '%hammer%' THEN 'Hammerhead Shark'
+			WHEN species LIKE '%thresh%' THEN 'Thresher Shark'
+			WHEN species LIKE '%spin%' THEN 'Spinner Shark'
+			WHEN species LIKE '%ragged%' THEN 'Raggedtooth Shark'
+			WHEN species LIKE '%lem%' THEN 'Lemon Shark'
+			WHEN species LIKE '%reef%' THEN 'Gray Reef Shark'
+			WHEN species LIKE '%porb%' THEN 'Porbeagle Shark'
+			WHEN species LIKE '%bron%' THEN 'Bronze Shark'
+			WHEN species LIKE '%seven%' THEN 'Seven Gill Shark'
+			WHEN species LIKE '%blu%' THEN 'Blue Shark'
+			WHEN species LIKE '%black%' THEN 'Blacktip Shark'
+			WHEN species LIKE ''  THEN 'Null' 
+			WHEN species LIKE '%confirm%' OR 
+				species LIKE '%iden%' OR 
+				species LIKE'%invol%' OR
+				species LIKE '%ques%' OR
+				species LIKE '%doub%'
+			THEN 'Uncomfired Shark Involvement'
+			ELSE Species
+			END AS shark_specie,
+		Species,
+		COUNT(Species) sharkfam
+	FROM `shark attacks`
+	GROUP BY shark_specie, Species
+	ORDER BY 3 DESC) genus
+GROUP BY shark_specie
+ORDER BY sharkgroup DESC
+; 
+
+<<
+
+
+
+I then asked questions like;
+Victims' Activites before Attack 
+
+Countries with the most shark attacks (Filter by Era)
+
+Where has the most shark attacks occured 
+
+Time of the day attacks occured the most
+
